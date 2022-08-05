@@ -1,37 +1,37 @@
-%data_file = '~/Desktop/slice19 4.txt';
-%% load(filename)
-%
-%% Data is tab-separated insight format
-%opts = detectImportOptions(data_file);
-%data = readtable(data_file, opts);
-%
-%% Separate channels in this dataset
-%classes = table2array(data(:, 12));
-%data1 = data(classes == 1, :);
-%data2 = data(classes == 2, :);
-%clear 'classes';
-%
-%%pixel_size = 0.160;  % um
-%units = 'nm';
-%
-%% Scale data to real units
-%%coords1 = pixel_size * table2array(data1(:, {'PositionX_nm_', 'PositionY_nm_'}));
-%%coords2 = pixel_size * table2array(data2(:, {'PositionX_nm_', 'PositionY_nm_'}));
-%
-%coords1 = table2array(data1(:, {'PositionX_nm_', 'PositionY_nm_'}));
-%coords2 = table2array(data2(:, {'PositionX_nm_', 'PositionY_nm_'}));
-%
-%% Maximum distance in pair-correlation and cross-correlation calculations.
-%maxDistance = 500; % nm
-%% Area of the field of view. Needed for correct normalization of
-%% pair-correlation density but does not affect the profile of the plot.
-%fovArea = 500^2;  % um^2
-%
-%% Run the pipeline to generate the pair- and cross-correlation plots. These
-%% plots will be used to determine cutoffs for molecule/cluster separation
-%% (cross-correlation) and for optional clustering (pair-correlation).
-%cc_graphic_pipeline(...
-%    coords1, coords2, maxDistance, fovArea, 'nm');
+data_file = '../cc_data/slice19 4.txt';
+% load(filename)
+
+% Data is tab-separated insight format
+opts = detectImportOptions(data_file);
+data = readtable(data_file, opts);
+
+% Separate channels in this dataset
+classes = table2array(data(:, 12));
+data1 = data(classes == 1, :);
+data2 = data(classes == 2, :);
+clear 'classes';
+
+%pixel_size = 0.160;  % um
+units = 'nm';
+
+% Scale data to real units
+%coords1 = pixel_size * table2array(data1(:, {'PositionX_nm_', 'PositionY_nm_'}));
+%coords2 = pixel_size * table2array(data2(:, {'PositionX_nm_', 'PositionY_nm_'}));
+
+coords1 = table2array(data1(:, {'PositionX_nm_', 'PositionY_nm_'}));
+coords2 = table2array(data2(:, {'PositionX_nm_', 'PositionY_nm_'}));
+
+% Maximum distance in pair-correlation and cross-correlation calculations.
+maxDistance = 500; % nm
+% Area of the field of view. Needed for correct normalization of
+% pair-correlation density but does not affect the profile of the plot.
+fovArea = 500^2;  % um^2
+
+% Run the pipeline to generate the pair- and cross-correlation plots. These
+% plots will be used to determine cutoffs for molecule/cluster separation
+% (cross-correlation) and for optional clustering (pair-correlation).
+cc_graphic_pipeline(...
+    coords1, coords2, maxDistance, fovArea, 'nm');
 
 % Distances used for optional clustering. Should be [0.0, 0.0] for no
 % clustering.
@@ -59,10 +59,10 @@ excluded_data{1} = data1(~coords_coloc{1}, :);
 excluded_data{2} = data2(~coords_coloc{2}, :);
 
 % Export the split coordinate lists.
-output_dir = './cluster_data/results/';
+output_dir = '../cc_data/results/';
 if ~exist(output_dir, 'dir')
     mkdir(output_dir)
 end
-output_pattern = './cluster_data/results/all_localizations';
+output_pattern = '../cc_data/results/all_localizations';
 writetable(vertcat(included_data{:}), [output_pattern '_included.txt'])
 writetable(vertcat(excluded_data{:}), [output_pattern '_excluded.txt'])
