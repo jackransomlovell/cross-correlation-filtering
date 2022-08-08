@@ -8,8 +8,11 @@ data_pdir = '/Users/haowang/Dropbox (MIT)/MIT/STORM data/';
 
 files = dir(data_pdir);
 
-for file = files
-    if contains(file,'txt') == 1
+for k = 1:numel(files)
+
+    file = files(k).name;
+
+    if contains(file,'.txt') == 1
         data_file = strcat(data_pdir,file);
         % load(filename)
         
