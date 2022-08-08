@@ -1,4 +1,4 @@
-function cc_graphic_pipeline(coords1, coords2, maxDistance, fovArea, units)
+function cc_graphic_pipeline(coords1, coords2, maxDistance, fovArea, units, slice_name, parent_save)
     % % Calculate pair correlation to determine cluster assignment distance.
     [~, ~, radii1, Ncounts1] = paircorr(coords1, fovArea, maxDistance);
     [~, ~, radii2, Ncounts2] = paircorr(coords2, fovArea, maxDistance);
@@ -16,7 +16,10 @@ function cc_graphic_pipeline(coords1, coords2, maxDistance, fovArea, units)
     hold off
     xlabel(['Distance ' '(' units ')'])
     ylabel(['Radial distribution 1 ' '(#/' units '^2)'])
-    
+    fig1_str_temp = '%s_fig1';
+    fig1_str = strcat(parent_save,sprintf(fig1_str_temp, slice_name));
+    saveas(gcf, fig1_str)
+
     figure
     hold on
     plot(radii2, Ncounts2)
@@ -25,6 +28,9 @@ function cc_graphic_pipeline(coords1, coords2, maxDistance, fovArea, units)
     hold off
     xlabel(['Distance ' '(' units ')'])
     ylabel(['Radial distribution 2 ' '(#/' units '^2)'])
+    fig2_str_temp = '%s_fig2';
+    fig2_str = strcat(parent_save,sprintf(fig2_str_temp, slice_name));
+    saveas(gcf, fig2_str)
 
     % % Calculate cross-correlation to determine co-localization cutoff distance.
     [normcounts, binCenters] = crosscorr(...
@@ -49,4 +55,7 @@ function cc_graphic_pipeline(coords1, coords2, maxDistance, fovArea, units)
     hold off
     xlabel(['Distance ' '(' units ')'])
     ylabel('Cross-correlation')
+    fig3_str_temp = '%s_fig3';
+    fig3_str = strcat(parent_save,sprintf(fig3_str_temp, slice_name));
+    saveas(gcf, fig3_str)
 end
